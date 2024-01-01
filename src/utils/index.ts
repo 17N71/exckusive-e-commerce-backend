@@ -1,0 +1,1 @@
+export { cathToError } from './catchError';

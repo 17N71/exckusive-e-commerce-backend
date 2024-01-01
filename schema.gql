@@ -1,0 +1,30 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  id: ID!
+  name: String
+  email: String
+  password: String!
+  avatar: String
+}
+
+type Query {
+  getUser(id: ID!): User!
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): User!
+}
+
+"""
+To Create User fields is one of ["optional" name or "optional" email], password, ["optional" avatar]
+"""
+input CreateUserInput {
+  name: String
+  email: String
+  avatar: String
+  password: String!
+  passwordRepeat: String
+}
