@@ -7,11 +7,15 @@ import { ICreateUserWithRepeat, IUser } from '../types/user-control.type';
 export class UserControlService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async getUser(id: number): Promise<IUser> {
+  async getUser({
+    name,
+    email,
+  }: Pick<IUser, 'email' | 'name'>): Promise<IUser> {
     try {
-      return await this.prismaService.user.findUnique({
-        where: { id },
+      const users = await this.prismaService.user.findMany({
+        where: { OR: [{ email, name }] },
       });
+      return users[0] || null;
     } catch (error) {
       cathToError(error, 'ErrorOnTryingGetUser');
     }

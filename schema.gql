@@ -2,29 +2,26 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type User {
+type UserWithoutPassword {
   id: ID!
   name: String
   email: String
-  password: String!
   avatar: String
 }
 
 type Query {
-  getUser(id: ID!): User!
+  getSome: UserWithoutPassword!
 }
 
 type Mutation {
-  createUser(createUserInput: CreateUserInput!): User!
+  login(payload: LoginUserInput!): UserWithoutPassword!
 }
 
 """
-To Create User fields is one of ["optional" name or "optional" email], password, ["optional" avatar]
+To Login User fields is one of ["optional" name or "optional" email], and required password
 """
-input CreateUserInput {
+input LoginUserInput {
   name: String
   email: String
-  avatar: String
   password: String!
-  passwordRepeat: String
 }
