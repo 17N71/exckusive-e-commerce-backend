@@ -3,10 +3,12 @@
 # ------------------------------------------------------
 
 type UserWithoutPassword {
-  id: ID!
-  name: String
-  email: String
+  id: Int!
+  name: String!
+  email: String!
   avatar: String
+  phone: String!
+  address: String!
 }
 
 type Query {
@@ -14,7 +16,29 @@ type Query {
 }
 
 type Mutation {
+  updateUser(payload: UpdateUserInput!): UserWithoutPassword!
+  register(payload: RegisterUserInput!): UserWithoutPassword!
   login(payload: LoginUserInput!): UserWithoutPassword!
+}
+
+input UpdateUserInput {
+  id: Float!
+  name: String
+  email: String
+  avatar: String
+  address: String
+  phone: String
+  password: String
+}
+
+input RegisterUserInput {
+  name: String!
+  email: String!
+  password: String!
+  address: String!
+  phone: String!
+  avatar: String
+  passwordRepeat: String!
 }
 
 """
@@ -23,5 +47,6 @@ To Login User fields is one of ["optional" name or "optional" email], and requir
 input LoginUserInput {
   name: String
   email: String
+  phone: String
   password: String!
 }
