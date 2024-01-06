@@ -38,3 +38,24 @@ export class UserWithoutPassword {
   @Field({ nullable: false })
   address: string;
 }
+
+@ObjectType()
+export class UserLoginResult {
+  @Field(() => Int)
+  id: number;
+
+  @Field({ nullable: false })
+  name: string;
+
+  @Field({ nullable: false })
+  email: string;
+
+  @Field({ nullable: true })
+  avatar?: string;
+
+  @Field({ nullable: false })
+  phone: string;
+
+  @Field({ nullable: false })
+  address: string;
+}

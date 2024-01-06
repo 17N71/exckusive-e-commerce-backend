@@ -7,7 +7,9 @@ export interface IUser {
   address: string;
   avatar?: string;
 }
-export interface ICreateUser extends Omit<IUser, 'id'> {}
+export type ICreateUser = Omit<IUser, 'id'>;
 export interface ICreateUserWithRepeat extends ICreateUser {
   passwordRepeat?: string;
 }
+
+export type ILoginResult = Omit<IUser, 'password'>;

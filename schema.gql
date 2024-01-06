@@ -11,14 +11,32 @@ type UserWithoutPassword {
   address: String!
 }
 
+type UserLoginResult {
+  id: Int!
+  name: String!
+  email: String!
+  avatar: String
+  phone: String!
+  address: String!
+}
+
+type Product {
+  """Product Id"""
+  id: Int!
+
+  """Product name"""
+  name: String!
+}
+
 type Query {
   getSome: UserWithoutPassword!
+  product: [Product!]!
 }
 
 type Mutation {
   updateUser(payload: UpdateUserInput!): UserWithoutPassword!
   register(payload: RegisterUserInput!): UserWithoutPassword!
-  login(payload: LoginUserInput!): UserWithoutPassword!
+  login(payload: LoginUserInput!): UserLoginResult!
 }
 
 input UpdateUserInput {

@@ -1,6 +1,9 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { ICreateUserWithRepeat } from 'src/types/user-control.type';
-import { UserWithoutPassword } from '../user-control/user-control.model';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
+import {
+  ICreateUserWithRepeat,
+  ILoginResult,
+} from 'src/types/user-control.type';
 import { UserControlService } from '../user-control/user-control.service';
 import { LoginPayload } from './auth.type';
 
@@ -9,7 +12,11 @@ export class AuthService {
   constructor(private readonly userService: UserControlService) {}
 
   async register(payload: ICreateUserWithRepeat) {
-    return await this.userService.createUser(payload);
+    const { password: _password, ...user } = await this.userService.createUser({
+      ...payload,
+    });
+
+    return user;
   }
 
   async login({
@@ -17,12 +24,14 @@ export class AuthService {
     email,
     password,
     phone,
-  }: LoginPayload): Promise<UserWithoutPassword> {
+  }: LoginPayload): Promise<ILoginResult> {
     const user = await this.userService.getUser({ name, email, phone });
+    const isMatch = await bcrypt.compare(password, user.password);
 
-    if (!user || user.password !== password) {
-      throw new UnauthorizedException();
+    if (!user || !isMatch) {
+      throw new BadRequestException();
     }
+
     const { password: _p, ...userWithoutPassword } = user;
 
     return userWithoutPassword;

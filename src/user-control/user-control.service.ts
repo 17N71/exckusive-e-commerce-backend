@@ -1,4 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
 import { PrismaService } from 'src/prisma.service';
 import { cathToError } from 'src/utils';
 import { ICreateUserWithRepeat, IUser } from '../types/user-control.type';
@@ -35,8 +36,9 @@ export class UserControlService {
           description: 'Please write credentials, and same passwords',
         });
       }
+      const hashPassword = await bcrypt.hash(password, 10);
       return this.prismaService.user.create({
-        data: { ...userData, password },
+        data: { ...userData, password: hashPassword },
       });
     } catch (error) {
       cathToError(error, 'ErrorOnTryingCreateUser');
@@ -44,16 +46,21 @@ export class UserControlService {
   }
 
   async updateUser(payload: IUserUpdatePayload): Promise<UserWithoutPassword> {
-    const { name, email, phone, password } = payload;
-    const user = await this.getUser({ name, email, phone });
+    try {
+      const { id, name, email, phone, password } = payload;
+      const user = await this.getUser({ name, email, phone });
+      const isMatch = await bcrypt.compare(password, user.password);
 
-    if (!user || password !== user.password || payload.id !== user.id) {
-      throw new BadRequestException();
+      if (!user || !isMatch || id !== user.id) {
+        throw new BadRequestException();
+      }
+
+      return await this.prismaService.user.update({
+        where: { id, AND: { password } },
+        data: payload,
+      });
+    } catch (error) {
+      cathToError(error, 'ErrorOnTryingUpdateUser');
     }
-
-    return await this.prismaService.user.update({
-      where: { id: user.id, AND: { password: user.password } },
-      data: payload,
-    });
   }
 }

@@ -2,6 +2,8 @@ import { ApolloDriver, type ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { AuthModule } from './auth/auth.module';
+import { PrismaService } from './prisma.service';
+import { ProductModule } from './product/product.module';
 import { UserControlModule } from './user-control/user-control.module';
 
 @Module({
@@ -13,6 +15,8 @@ import { UserControlModule } from './user-control/user-control.module';
       autoSchemaFile: 'schema.gql',
       installSubscriptionHandlers: true,
     }),
+    ProductModule,
   ],
+  providers: [PrismaService],
 })
 export class AppModule {}
