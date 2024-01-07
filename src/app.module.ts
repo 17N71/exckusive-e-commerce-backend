@@ -5,6 +5,7 @@ import { AuthModule } from './auth/auth.module';
 import { PrismaService } from './prisma.service';
 import { ProductModule } from './product/product.module';
 import { UserControlModule } from './user-control/user-control.module';
+import { CategoryModule } from './category/category.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { UserControlModule } from './user-control/user-control.module';
       installSubscriptionHandlers: true,
     }),
     ProductModule,
+    CategoryModule,
   ],
   providers: [PrismaService],
 })

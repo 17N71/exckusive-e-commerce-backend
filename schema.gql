@@ -21,22 +21,46 @@ type UserLoginResult {
 }
 
 type Product {
-  """Product Id"""
   id: Int!
+  price: Int!
+  title: String!
+  description: String!
+  avatar: String!
+  images: [String!]!
+  categoryId: Int!
+}
 
-  """Product name"""
-  name: String!
+type Category {
+  id: Int!
+  title: String!
 }
 
 type Query {
   getSome: UserWithoutPassword!
-  product: [Product!]!
+  findAllProducts: [Product!]!
+  findProduct(getProductDto: GetProductInput!): [Product!]!
+  findCategory(getCategoryDto: GetCategoryDto!): Category!
+  findAllCategories: [Category!]!
+}
+
+input GetProductInput {
+  id: Int!
+}
+
+input GetCategoryDto {
+  id: Int!
 }
 
 type Mutation {
   updateUser(payload: UpdateUserInput!): UserWithoutPassword!
   register(payload: RegisterUserInput!): UserWithoutPassword!
   login(payload: LoginUserInput!): UserLoginResult!
+  createProduct(productDto: CreateProductInput!): Product!
+  updateProduct(updateProductDto: UpdateProductInput!): Product!
+  removeProduct(removeProductDto: DeleteProductInput!): Product!
+  createCategory(createCategoryDto: CreateCategoryDto!): Category!
+  updateCategory(updateCategoryDto: UpdateCategoryDto!): Category!
+  deleteCategory(deleteCategoryDto: DeleteCategoryDto!): Category!
 }
 
 input UpdateUserInput {
@@ -67,4 +91,39 @@ input LoginUserInput {
   email: String
   phone: String
   password: String!
+}
+
+input CreateProductInput {
+  price: Int!
+  title: String!
+  description: String!
+  avatar: String!
+  images: [String!]!
+  categoryId: Int!
+}
+
+input UpdateProductInput {
+  price: Int
+  title: String
+  description: String
+  avatar: String
+  images: [String!]
+  categoryId: Int
+  id: Int!
+}
+
+input DeleteProductInput {
+  id: Int!
+}
+
+input CreateCategoryDto {
+  title: String!
+}
+
+input UpdateCategoryDto {
+  id: Int!
+}
+
+input DeleteCategoryDto {
+  id: Int!
 }
