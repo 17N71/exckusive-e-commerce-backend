@@ -41,6 +41,7 @@ model Product {
   images      String[]
   category    Category @relation(fields: [categoryId], references: [id])
   Order       Order[]
+  rate        Int
   categoryId  Int
 }
 
