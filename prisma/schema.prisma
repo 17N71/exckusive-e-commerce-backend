@@ -42,6 +42,7 @@ model Product {
   category    Category @relation(fields: [categoryId], references: [id])
   Order       Order[]
   rate        Int
+  sale        Int
   categoryId  Int
 }
 
