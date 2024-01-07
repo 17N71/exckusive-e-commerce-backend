@@ -58,5 +58,6 @@ model Variation {
 model Category {
   id      Int       @id @default(autoincrement())
   title   String
-  Product Product[]
+  icon    String
+  product Product[]
 }
