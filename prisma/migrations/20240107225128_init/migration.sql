@@ -18,6 +18,7 @@ CREATE TABLE "Order" (
     "arrivingDate" TIMESTAMP(3) NOT NULL,
     "userId" INTEGER NOT NULL,
     "productId" INTEGER NOT NULL,
+    "status" TEXT NOT NULL DEFAULT 'backlog',
 
     CONSTRAINT "Order_pkey" PRIMARY KEY ("id")
 );
@@ -30,9 +31,21 @@ CREATE TABLE "Product" (
     "description" TEXT NOT NULL,
     "avatar" TEXT NOT NULL,
     "images" TEXT[],
+    "rate" INTEGER NOT NULL,
     "categoryId" INTEGER NOT NULL,
 
     CONSTRAINT "Product_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Variation" (
+    "id" SERIAL NOT NULL,
+    "color" TEXT NOT NULL,
+    "quantity" INTEGER NOT NULL,
+    "sale" INTEGER NOT NULL,
+    "productId" INTEGER NOT NULL,
+
+    CONSTRAINT "Variation_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -64,6 +77,9 @@ CREATE UNIQUE INDEX "Order_productId_key" ON "Order"("productId");
 -- CreateIndex
 CREATE UNIQUE INDEX "Product_id_key" ON "Product"("id");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "Variation_id_key" ON "Variation"("id");
+
 -- AddForeignKey
 ALTER TABLE "Order" ADD CONSTRAINT "Order_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
@@ -72,3 +88,6 @@ ALTER TABLE "Order" ADD CONSTRAINT "Order_productId_fkey" FOREIGN KEY ("productI
 
 -- AddForeignKey
 ALTER TABLE "Product" ADD CONSTRAINT "Product_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Variation" ADD CONSTRAINT "Variation_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

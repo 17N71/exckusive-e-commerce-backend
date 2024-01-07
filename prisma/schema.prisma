@@ -33,17 +33,26 @@ model Order {
 }
 
 model Product {
-  id          Int      @id @unique @default(autoincrement())
+  id          Int         @id @unique @default(autoincrement())
   price       Int
   title       String
   description String
   avatar      String
   images      String[]
-  category    Category @relation(fields: [categoryId], references: [id])
+  category    Category    @relation(fields: [categoryId], references: [id])
   Order       Order[]
   rate        Int
-  sale        Int
   categoryId  Int
+  variations  Variation[]
+}
+
+model Variation {
+  id        Int     @id @unique @default(autoincrement())
+  color     String
+  quantity  Int
+  sale      Int
+  productId Int
+  product   Product @relation(fields: [productId], references: [id])
 }
 
 model Category {
