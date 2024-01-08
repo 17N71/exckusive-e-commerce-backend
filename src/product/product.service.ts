@@ -25,8 +25,12 @@ export class ProductService {
 
   async createProduct(createProductDto: CreateProductInput): Promise<Product> {
     try {
+      const variations = createProductDto.variations;
       return await this.prismaService.product.create({
-        data: createProductDto,
+        data: { ...createProductDto, variations: { create: variations } },
+        include: {
+          variations: true,
+        },
       });
     } catch (error) {
       cathToError(error, 'errorOnTryToCreateProduct');
@@ -37,16 +41,17 @@ export class ProductService {
     updateProductInput: UpdateProductInput,
   ): Promise<Product> {
     try {
-      const { id, ...data } = updateProductInput;
-      return await this.prismaService.product.update({ data, where: { id } });
+      const { id, variations, ...data } = updateProductInput;
+      return await this.prismaService.product.update({
+        data: { ...data, variations: { create: variations } },
+        where: { id },
+      });
     } catch (error) {
       cathToError(error, 'errorOnTryToCreateProduct');
     }
   }
 
   async remove(id: number): Promise<Product> {
-    console.log({ id });
-
     try {
       return await this.prismaService.product.delete({
         where: {
