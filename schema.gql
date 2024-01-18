@@ -20,6 +20,17 @@ type UserLoginResult {
   address: String!
 }
 
+type Category {
+  id: Int!
+  title: String!
+}
+
+type Genre {
+  id: Int!
+  title: String!
+  slug: String!
+}
+
 type Product {
   id: Int!
   price: Int!
@@ -30,17 +41,14 @@ type Product {
   categoryId: Int!
 }
 
-type Category {
-  id: Int!
-  title: String!
-}
-
 type Query {
   getSome: UserWithoutPassword!
   findAllProducts: [Product!]!
   findProduct(getProductDto: GetProductInput!): [Product!]!
   findCategory(getCategoryDto: GetCategoryDto!): Category!
   findAllCategories: [Category!]!
+  getAllGenres: [Genre!]!
+  getGenre(id: Float!): Genre!
 }
 
 input GetProductInput {
@@ -61,6 +69,9 @@ type Mutation {
   createCategory(createCategoryDto: CreateCategoryDto!): Category!
   updateCategory(updateCategoryDto: UpdateCategoryDto!): Category!
   deleteCategory(deleteCategoryDto: DeleteCategoryDto!): Category!
+  createGenre(createGenreInput: CreateGenreInput!): Genre!
+  updateGenre(updateGenreInput: UpdateGenreInput!): Genre!
+  removeGenre(id: Float!): Genre!
 }
 
 input UpdateUserInput {
@@ -100,6 +111,7 @@ input CreateProductInput {
   avatar: String!
   images: [String!]!
   categoryId: Int!
+  genreSlug: String!
   rate: Int!
   variations: [VariationsType!]!
 }
@@ -117,6 +129,7 @@ input UpdateProductInput {
   avatar: String
   images: [String!]
   categoryId: Int
+  genreSlug: String
   rate: Int
   variations: [VariationsType!]
   id: Int!
@@ -129,6 +142,7 @@ input DeleteProductInput {
 input CreateCategoryDto {
   title: String!
   icon: String!
+  slug: String!
 }
 
 input UpdateCategoryDto {
@@ -136,5 +150,14 @@ input UpdateCategoryDto {
 }
 
 input DeleteCategoryDto {
+  id: Int!
+}
+
+input CreateGenreInput {
+  title: String!
+  slug: String!
+}
+
+input UpdateGenreInput {
   id: Int!
 }

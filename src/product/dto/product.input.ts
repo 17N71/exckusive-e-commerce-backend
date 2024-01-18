@@ -32,7 +32,10 @@ export class CreateProductInput {
   images: string[];
 
   @Field(() => Int)
-  categoryId: number; // Instead of 'never', use the appropriate type (e.g., number)
+  categoryId: number;
+
+  @Field(() => String)
+  genreSlug: string;
 
   @Field(() => Int)
   rate: number;

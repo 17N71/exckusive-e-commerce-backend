@@ -1,0 +1,26 @@
+type Genre {
+  # Example field (placeholder)
+  id: Int
+  title: String
+  slug: String
+}
+
+input CreateGenreInput {
+  title: String
+  slug: String
+}
+
+input UpdateGenreInput {
+  id: Int!
+}
+
+type Query {
+  genre: [Genre]!
+  genre(id: Int!): Genre
+}
+
+type Mutation {
+  createGenre(createGenreInput: CreateGenreInput!): Genre!
+  updateGenre(updateGenreInput: UpdateGenreInput!): Genre!
+  removeGenre(id: Int!): Genre
+}

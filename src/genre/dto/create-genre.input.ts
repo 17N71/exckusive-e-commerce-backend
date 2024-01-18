@@ -1,12 +1,9 @@
 import { Field, InputType } from '@nestjs/graphql';
 
 @InputType()
-export class CreateCategoryDto {
+export class CreateGenreInput {
   @Field(() => String)
   title: string;
-
-  @Field(() => String)
-  icon: string;
 
   @Field(() => String)
   slug: string;
